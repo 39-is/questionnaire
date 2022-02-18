@@ -9,6 +9,10 @@
 <body>
     <?php
     use lib\Auth;
+    use lib\Msg;
+
+    Msg::flush(); 
+
 
     if(Auth::islogin()){
         echo 'ログイン中';

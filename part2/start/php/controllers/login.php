@@ -2,6 +2,7 @@
 namespace controller\login;
 
 use lib\Auth;
+use lib\Msg;
 
 function get() {
     require_once SOURCE_BASE . 'views/login.php';
@@ -12,13 +13,14 @@ function post() {
     $id = get_param('id','');
     $pwd = get_param('pwd','');
 
-    echo $_POST['id'], $_POST['pwd'];
+    Msg::push(Msg::DEBUG, 'デバッグメッセージです');
 
     if(Auth::login($id, $pwd)){
-        echo '認証成功';
+        Msg::push(Msg::INFO, '認証成功');
+        
         redirect(GO_HOME); 
     } else {
-        echo '認証失敗';
+        Msg::push(Msg::ERROR, '認証失敗');
         redirect(GO_REFERER);
     }
 }
