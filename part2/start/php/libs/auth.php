@@ -2,6 +2,8 @@
 namespace lib;
 
 use db\UserQuery;
+use model\UserModel;
+
 
 class Auth {
     public static function login($id, $pwd) {
@@ -13,7 +15,7 @@ class Auth {
     
             if (password_verify($pwd, $user->pwd)){
                 $is_success = true;
-                $_SESSION['user'] = $user;
+                UserModel::setSession($user);
             }else {
                 echo 'not correct password';
             }
@@ -26,18 +28,35 @@ class Auth {
             return $is_success;
     }
 
-    public static function regist($id, $pwd, $nickname){
+    public static function regist($user){
             $is_success = false;
 
-            $exit_user = UserQuery::fetchById($id);
+            $exit_user = UserQuery::fetchById($user->id);
 
             if (!empty($exit_user)){
                 echo 'ユーザーが既に存在します';
                 return false;
             }
 
-            $is_success = UserQuery::insert($id, $pwd, $nickname);
+
+            $is_success = UserQuery::insert($user);
+
+
+            if ($is_success) {
+                UserModel::setSession($user);
+                $_SESSION['user'] = $user;
+            }
+
+
             return $is_success;
     }
+        public static function islogin(){
+            $user = UserModel::getSession();
 
+            if (isset($user)) {
+                return true;
+            } else {
+                return false;
+            }
+        }
 }
