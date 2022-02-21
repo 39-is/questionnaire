@@ -3,11 +3,17 @@ namespace lib;
 
 use db\UserQuery;
 use model\UserModel;
-
+use Throwable;
 
 class Auth {
     public static function login($id, $pwd) {
-        $is_success = false;
+        try{ 
+            if(!(UserModel::validateId($id)
+               * UserModel::validatePwd($pwd))){
+                return false;
+            }
+            
+            $is_success = false;
     
         $user = UserQuery::fetchById($id);
     
@@ -17,11 +23,23 @@ class Auth {
                 $is_success = true;
                 UserModel::setSession($user);
             }else {
-                echo 'not correct password';
+                Msg::push(Msg::ERROR, 'Not Correct password');
+                
             }
         }else {
-                echo 'Not find user';
+            Msg::push(Msg::ERROR, 'Not Find user');
             }
+        
+
+        } catch(Throwable $e){
+            $is_success = false;
+            Msg::push(Msg::DEBUG, $e->getMessage());
+            Msg::push(Msg::ERROR, 'ログイン処理にエラーが出たよ');
+
+        }
+
+
+
         
         
         
@@ -29,12 +47,18 @@ class Auth {
     }
 
     public static function regist($user){
+        try{ 
+            if(!($user->isValidId()
+            * $user->isValidPwd()
+            * $user->isValidNickname())){
+                return false;
+            }
             $is_success = false;
 
             $exit_user = UserQuery::fetchById($user->id);
 
             if (!empty($exit_user)){
-                echo 'ユーザーが既に存在します';
+                Msg::push(Msg::ERROR,'ユーザーが既に存在します');
                 return false;
             }
 
@@ -47,11 +71,28 @@ class Auth {
                 $_SESSION['user'] = $user;
             }
 
+        } catch(Throwable $e){
+            $is_success = false;
+            Msg::push(Msg::DEBUG, $e->getMessage());
+            Msg::push(Msg::ERROR, 'ユーザー登録処理にエラーが出たよ');
+
+        }
+
 
             return $is_success;
     }
         public static function islogin(){
-            $user = UserModel::getSession();
+            try{
+                $user = UserModel::getSession();
+            } catch(Throwable $e){
+                UserModel::clearSession();
+                Msg::push(Msg::DEBUG, $e->getMessage());
+                Msg::push(Msg::ERROR, 'エラーが出たよ。再度ログイン');
+                return false;
+
+
+            }
+
 
             if (isset($user)) {
                 return true;
@@ -59,4 +100,19 @@ class Auth {
                 return false;
             }
         }
+
+    public static function logout(){
+        try{
+            UserModel::clearSession();
+            
+        } catch(Throwable $e){
+            UserModel::clearSession();
+            Msg::push(Msg::DEBUG, $e->getMessage());
+            
+            return false;
+
+
+        }
+        return true;
+    }
 }
