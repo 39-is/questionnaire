@@ -1,9 +1,13 @@
 $body-bg: red;
 $body-color: green;
-@import "css/bootstrap/scss/bootstrap.scss";
+@import "../css/bootstrap/scss/bootstrap.scss";
+
 
 
 .login-form{
     width: 300px;
 }
+
+
+
 
