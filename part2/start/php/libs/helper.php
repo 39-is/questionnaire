@@ -17,6 +17,10 @@ function redirect($path){
 
 }
 
+function the_url($path){
+    echo get_url($path);
+}
+
 function get_url($path){
     return BASE_CONTEXT_PATH . trim($path, '/');
 }
