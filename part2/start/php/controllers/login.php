@@ -6,23 +6,26 @@ use lib\Msg;
 use model\UserModel;
 
 function get() {
-    require_once SOURCE_BASE . 'views/login.php';
+
+    
+    \view\login\index();
+
 }
 
-
 function post() {
-    $id = get_param('id','');
-    $pwd = get_param('pwd','');
+    
+    $id = get_param('id', '');
+    $pwd = get_param('pwd', '');
 
+    if(Auth::login($id, $pwd)) {
 
-
-    if(Auth::login($id, $pwd)){
         $user = UserModel::getSession();
-        Msg::push(Msg::INFO, "{$user->nickname}君、ようこそ！");
-        
-        redirect(GO_HOME); 
+        Msg::push(Msg::INFO, "{$user->nickname}さん、ようこそ。");
+        redirect(GO_HOME);
+
     } else {
-        
+
         redirect(GO_REFERER);
+
     }
 }

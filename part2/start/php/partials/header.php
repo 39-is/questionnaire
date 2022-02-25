@@ -1,6 +1,12 @@
 <?php
- use lib\Auth;
- use lib\Msg;
+namespace partials;
+
+use lib\Auth;
+use lib\Msg;
+
+function header(){
+
+
 ?>
 <!DOCTYPE html>
 <html>
@@ -15,6 +21,8 @@
     <link rel="stylesheet" href="<?php echo BASE_CSS_PATH; ?>style.css"> 
     
 </head>
+
+
 <body>
 <div id="container">
         <header class="container my-2">
@@ -24,11 +32,15 @@
                     <span class="h2 font-weight-bold mb-0">みんなのアンケート</span>
                 </a>
                 <div class="col-md-auto">
-                    <?php if(true) : ?>
-                    <a href="<?php the_url('register'); ?>" class="btn btn-primary mr-2">登録</a>
-                    <a href="<?php the_url('login'); ?>">ログイン</a>
+                    <?php if(Auth::islogin()) : ?>
+                    <?php //ログインしてる時-- ?>
+                        <a href="<?php the_url('topic/create'); ?>" class="btn btn-primary mr-2">投稿</a>
+                        <a href="<?php the_url('topic/archive'); ?>" class="mr2"> 過去の投稿</a>
+                        <a href="<?php the_url('logout'); ?>"> ログアウト</a>
                     <?php else: ?>
-                        <!--ログインしてる時-->
+                        <a href="<?php the_url('register'); ?>" class="btn btn-primary mr-2">登録</a>
+                        <a href="<?php the_url('login'); ?>">ログイン</a>
+
                     <?php endif; ?>
                 </div>
             </nav>
@@ -37,5 +49,7 @@
 
 
 
-    <?php Msg::flush(); 
+    <?php
+        Msg::flush(); 
+    }
     ?>
