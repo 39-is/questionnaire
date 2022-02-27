@@ -178,7 +178,7 @@ public static function incrementLikesOrDislikes($comment){
 
         return $db->execute($sql, [
 
-        ':id' => $comment->topic_id
+        ':topic_id' => $comment->topic_id
 
         ]); 
 

@@ -42,12 +42,7 @@ class CommentQuery {
     
             $db = new DataSource;
     
-            $sql = '
-            insert into comments
-                (topic_id, agree, body, user_id)
-            values
-                (:topic_id, :agree, :body, :user_id)
-            ';
+            $sql = 'insert into comments (topic_id, agree, body, user_id) values (:topic_id, :agree, :body, :user_id)';
     
             return $db->execute($sql, [
                 ':topic_id' => $comment->topic_id,
