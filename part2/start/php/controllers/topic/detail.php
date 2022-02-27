@@ -22,7 +22,7 @@ function get(){
     $comments = CommentQuery::fetchByTopicId($topic);
 
     if (empty($fetchedTopic) || !$fetchedTopic->published){
-        Msg::push(Msg::ERROR, 'とピックが見つかりません');
+        Msg::push(Msg::ERROR, 'トピックが見つかりません');
         redirect('404');
     }
     
