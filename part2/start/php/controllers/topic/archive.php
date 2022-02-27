@@ -2,8 +2,8 @@
 namespace controller\topic\archive;
 
 use lib\Auth;
-use db\TopicQuery;
 use lib\Msg;
+use db\TopicQuery;
 use model\UserModel;
 
 function get(){
@@ -15,7 +15,7 @@ function get(){
     $topics = TopicQuery::fetchByUserId($user);
 
     if ($topics === false){
-        Msg::push(Msg::ERROR, 'ログインしろよ');
+        Msg::push(Msg::ERROR, 'ログインしてね');
         redirect('login');
     }
     
