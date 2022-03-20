@@ -5,7 +5,7 @@ use db\DataSource;
 use model\UserModel;
 
 
-class UserQuery {
+class UserQuery { //データベースに接続してデータを取得
     public static function fetchById($id) {
 
     $db = new DataSource;
